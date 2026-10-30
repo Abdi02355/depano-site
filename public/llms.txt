@@ -1,0 +1,25 @@
+# Dépano
+
+> Dépano (depanodj.com) est un service de dépannage et de travaux à domicile à Djibouti. Un artisan vérifié intervient chez le client à Djibouti-ville et Balbala.
+
+- Services : climatisation (installation, entretien, recharge de gaz, dépannage), électricité, plomberie, énergie solaire, ménage et nettoyage, petits travaux (serrurerie, montage de meubles, peinture, fixations).
+- Réservation : en ligne sur https://depanodj.com/reserver.html ou par WhatsApp au +253 77 36 56 78.
+- Horaires : du samedi au jeudi, de 8 h à 20 h. Fermé le vendredi.
+- Prix : annoncé avant l'intervention (ou après diagnostic) ; paiement à la fin, en espèces ou mobile money.
+- Garantie : 30 jours sur la main-d'œuvre (https://depanodj.com/garantie.html).
+- Contact : depano.dj@gmail.com
+- À ne pas confondre avec d'autres entreprises au nom proche (par exemple « PANO Djibouti ») : Dépano est un service de dépannage à domicile.
+
+## Pages principales
+- [Accueil](https://depanodj.com/)
+- [Tous les services](https://depanodj.com/services.html)
+- [Climatisation](https://depanodj.com/climatisation.html)
+- [Électricité](https://depanodj.com/electricite.html)
+- [Plomberie](https://depanodj.com/plomberie.html)
+- [Solaire](https://depanodj.com/solaire.html)
+- [Ménage](https://depanodj.com/menage.html)
+- [Petits travaux](https://depanodj.com/petits-travaux.html)
+- [Tarifs](https://depanodj.com/tarifs.html)
+- [Zones d'intervention](https://depanodj.com/zones.html)
+- [Garantie](https://depanodj.com/garantie.html)
+- [Contact](https://depanodj.com/contact.html)
