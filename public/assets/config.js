@@ -40,6 +40,14 @@ window.DEPANO_CONFIG = {
 
   /* Enregistrement des demandes dans Supabase (facultatif, voir LISEZMOI.md).
      Laissez vide pour n'utiliser que WhatsApp. */
+
+  /* Candidatures en ligne (pages emploi-*.html) : base Supabase « depano »,
+     table candidatures + dossier de fichiers candidatures. La clé ci-dessous
+     est publique : elle permet seulement d'ENVOYER une candidature, pas de les lire. */
+  recrutement: {
+    url: "https://kltoidjepdmqmphbmlal.supabase.co",
+    cle: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsdG9pZGplcGRtcW1waGJtbGFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODEyOTUsImV4cCI6MjEwODk1NzI5NX0.yLXn6l7K6xa1vmQ8qabCcavKjkUNnKVp4lFyKOpwT9k"
+  },
   supabase: {
     url: "",
     cle: "",
