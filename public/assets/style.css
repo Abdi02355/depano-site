@@ -1354,3 +1354,19 @@ body::before{background:#fff}
 .hx-accent{background:linear-gradient(transparent 70%,rgba(255,200,61,.85) 70%,rgba(255,200,61,.85) 88%,transparent 88%)}
 @media (min-width:961px){.hx-grid{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr)}}
 @media (max-width:560px){.hx-title{font-size:clamp(33px,9.2vw,40px)}}
+
+/* v7 — réservation directe WhatsApp */
+.rv-section{padding-block:clamp(28px,4vw,56px)}
+.rv-wrap{max-width:640px}
+.rv-book{animation:none;box-shadow:0 30px 70px -40px rgba(10,40,40,.45),0 0 0 1px var(--line)}
+.rv-presta{margin:8px 0 0;font-size:15px;color:var(--muted)}
+.rv-presta b{color:var(--text)}
+.rv-steps{list-style:none;margin:26px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rv-steps li{display:flex;gap:10px;align-items:center;font-size:14.5px;color:var(--muted)}
+.rv-steps b{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px}
+.rv-alt{margin:20px 0 0;text-align:center;color:var(--muted)}
+.rv-alt a{font-weight:700;color:var(--text)}
+.hx-svc.is-pick{animation:pick .35s ease}
+@keyframes pick{50%{transform:scale(.96)}}
+@media (max-width:560px){.rv-steps{grid-template-columns:1fr}}
+@media (max-width:760px){.hx-svc:has(input:checked)::after{top:5px;right:5px;width:15px;height:15px;background-size:10px}.hx-svc{padding-right:16px}.hx-svc-name{font-size:14px}}

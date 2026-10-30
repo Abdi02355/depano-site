@@ -659,3 +659,35 @@
     if (v) { el.textContent = v; el.hidden = false; }
   });
 })();
+
+/* v7 — formulaires de réservation : ouvrent WhatsApp avec un message prêt */
+(function () {
+  "use strict";
+  var H = window.DEPANO;
+  var forms = document.querySelectorAll("form[data-wa-book]");
+  if (!H || !forms.length) return;
+  Array.prototype.forEach.call(forms, function (form) {
+    Array.prototype.forEach.call(form.querySelectorAll('input[name="service"]'), function (r) {
+      r.addEventListener("change", function () {
+        var l = r.closest("label"); if (!l) return;
+        l.classList.remove("is-pick"); void l.offsetWidth; l.classList.add("is-pick");
+      });
+    });
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var r = form.querySelector('input[name="service"]:checked');
+      var svc = r ? (r.closest("label").querySelector(".hx-svc-name") || {}).textContent : "";
+      var presta = form.getAttribute("data-prestation") || "";
+      var sel = form.querySelector('select[name="quartier"]');
+      var quartier = sel && sel.value ? sel.value : "";
+      var lines = ["Bonjour Dépano,"];
+      if (svc) lines.push("J'ai besoin d'un service : " + svc + (presta ? " (" + presta + ")" : "") + ".");
+      else lines.push("J'ai besoin d'un dépannage à domicile.");
+      if (quartier) lines.push("Quartier : " + quartier + ".");
+      lines.push("Voici mon problème : ");
+      var url = H.waUrl(lines.join("\n"));
+      try { if (window.gtag) window.gtag("event", "reservation_whatsapp", { service: svc || "non précisé" }); } catch (e) {}
+      window.location.href = url;
+    });
+  });
+})();
