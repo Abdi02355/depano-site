@@ -1468,3 +1468,4 @@ body::before{background:#fff}
 .promo-tag{flex:none;padding:3px 10px;border-radius:999px;background:#2A1E00;color:#F2C94C;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .promo-go{flex:none;font-weight:700;color:#2A1E00;text-decoration:underline;text-underline-offset:3px}
 @media (max-width:700px){.promo-bar{font-size:13px}.promo-in{gap:8px;justify-content:flex-start;text-align:left}.promo-go{display:none}.promo-tag{font-size:10.5px;padding:3px 8px}}
+@media (max-width:700px){.promo-more{display:none}}
