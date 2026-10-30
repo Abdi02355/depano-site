@@ -684,6 +684,7 @@
       if (svc) lines.push("J'ai besoin d'un service : " + svc + (presta ? " (" + presta + ")" : "") + ".");
       else lines.push("J'ai besoin d'un dépannage à domicile.");
       if (quartier) lines.push("Quartier : " + quartier + ".");
+      lines.push("(Offre de lancement : déplacement gratuit)");
       lines.push("Voici mon problème : ");
       var url = H.waUrl(lines.join("\n"));
       try { if (window.gtag) window.gtag("event", "reservation_whatsapp", { service: svc || "non précisé" }); } catch (e) {}
