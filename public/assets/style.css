@@ -1469,3 +1469,30 @@ body::before{background:#fff}
 .promo-go{flex:none;font-weight:700;color:#2A1E00;text-decoration:underline;text-underline-offset:3px}
 @media (max-width:700px){.promo-bar{font-size:13px}.promo-in{gap:8px;justify-content:flex-start;text-align:left}.promo-go{display:none}.promo-tag{font-size:10.5px;padding:3px 8px}}
 @media (max-width:700px){.promo-more{display:none}}
+
+/* v12 — pages quartiers, urgence, liens de zones */
+a.zone-card{color:inherit;text-decoration:none;transition:border-color .15s,transform .15s,box-shadow .15s}
+a.zone-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 14px 30px -22px rgba(10,40,40,.5)}
+.svc-local{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.svc-l{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:18px;border-radius:18px;background:#fff;border:1.5px solid var(--line);color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+.svc-l:hover{border-color:var(--tone);transform:translateY(-2px)}
+.svc-l-ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--tint);color:var(--tone)}
+.svc-l-t{display:flex;flex-direction:column;gap:3px}
+.svc-l-t b{font-size:16.5px}
+.svc-l-t small{font-size:14px;color:var(--muted);line-height:1.45}
+.svc-l-go{color:var(--tone)}
+.zone-links{display:flex;flex-wrap:wrap;gap:10px}
+.zone-link{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:inherit;text-decoration:none;font-weight:600}
+.zone-link:hover{border-color:var(--accent);color:var(--accent)}
+.urg-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.urg-card{padding:22px;border-radius:20px;background:#fff;border:1.5px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.urg-card h3{margin:0;font-size:19px}
+.urg-card ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;color:var(--text);line-height:1.5}
+.urg-card .link-arrow{margin-top:auto;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.foot-zones{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:18px 0;margin-top:8px;border-top:1px solid rgba(255,255,255,.12);font-size:14px}
+.foot-zones span{opacity:.7}
+.foot-zones a{color:inherit;opacity:.9}
+.foot-zones a:hover{opacity:1;text-decoration:underline}
+@media (max-width:900px){.svc-local{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.svc-local,.urg-grid{grid-template-columns:1fr}}
+.urg-card ol{list-style:decimal}.urg-card ol li::marker{color:var(--accent);font-weight:700}

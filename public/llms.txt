@@ -8,6 +8,7 @@
 - Prix : annoncé avant l'intervention (ou après diagnostic) ; paiement à la fin, en espèces ou mobile money.
 - Garantie : 30 jours sur la main-d'œuvre (https://depanodj.com/garantie.html).
 - Contact : depano.dj@gmail.com
+- YouTube : https://www.youtube.com/@depanodj
 - À ne pas confondre avec d'autres entreprises au nom proche (par exemple « PANO Djibouti ») : Dépano est un service de dépannage à domicile.
 
 ## Pages principales
@@ -27,3 +28,11 @@
 ## Offres d'emploi
 - [Électricien expérimenté, 5 ans minimum](https://depanodj.com/emploi-electricien.html)
 - [Plombier expérimenté, 5 ans minimum](https://depanodj.com/emploi-plombier.html)
+
+## Par quartier
+- [Balbala](https://depanodj.com/depannage-balbala.html)
+- [Haramous](https://depanodj.com/depannage-haramous.html)
+- [Centre-ville](https://depanodj.com/depannage-centre-ville.html)
+- [Gabode](https://depanodj.com/depannage-gabode.html)
+- [Arhiba et Ambouli](https://depanodj.com/depannage-arhiba-ambouli.html)
+- [Dépannage urgent](https://depanodj.com/depannage-urgence.html)
