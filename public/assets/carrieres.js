@@ -28,15 +28,11 @@
     inp.addEventListener("change", function () {
       var out = inp.closest(".drop").querySelector("[data-file-name]");
       var n = inp.files.length;
-      if (inp.multiple && n > 5) out.textContent = n + " photos choisies (les 5 premières seront envoyées)";
+      if (false) out.textContent = n + " photos choisies (les 5 premières seront envoyées)";
       else out.textContent = n === 0 ? (inp.multiple ? "Aucune photo choisie" : "Aucun fichier choisi") : n === 1 ? inp.files[0].name : n + " photos choisies";
       inp.closest(".drop").classList.toggle("has-file", n > 0);
     });
   });
-
-  /* Avertissement : moins de 5 ans */
-  var exp = form.elements.annees_experience, warn = $("[data-exp-warn]");
-  if (exp && warn) exp.addEventListener("change", function () { warn.hidden = exp.value !== "Moins de 5 ans"; });
 
   function fail(msg, el) {
     err.innerHTML = "";
@@ -91,17 +87,14 @@
     if (val("site_web")) return;                       /* robot */
     if (Date.now() - started < 4000) return fail("Merci de vérifier vos informations avant d'envoyer.");
 
-    var req = [["prenom", "Indiquez votre prénom."], ["nom", "Indiquez votre nom."], ["telephone", "Indiquez votre numéro de téléphone."],
-      ["quartier", "Choisissez votre quartier."], ["annees_experience", "Indiquez vos années d'expérience."], ["situation", "Indiquez votre situation actuelle."]];
+    var req = [["prenom", "Indiquez votre prénom."], ["nom", "Indiquez votre nom."], ["telephone", "Indiquez votre numéro de téléphone."]];
     for (var i = 0; i < req.length; i++) if (!val(req[i][0])) return fail(req[i][1], form.elements[req[i][0]]);
     if (digits(val("telephone")).length < 8) return fail("Le numéro de téléphone doit contenir au moins 8 chiffres.", form.elements.telephone);
     if (val("email") && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val("email"))) return fail("L'adresse e-mail n'est pas valide.", form.elements.email);
-    if (!checks("specialites").length) return fail("Cochez au moins une spécialité.", form.querySelector('input[name="specialites"]'));
-    if (val("motivation").length < 20) return fail("Présentez-vous en quelques lignes (20 caractères minimum).", form.elements.motivation);
     var cv = form.elements.cv.files[0] || null;
-    var photos = Array.prototype.slice.call(form.elements.photos.files, 0, 5);
-    if (cv && cv.size > MAX) return fail("Le CV dépasse 5 Mo. Choisissez un fichier plus léger.", form.elements.cv);
-    if (!form.elements.certifie.checked) return fail("Cochez la case pour certifier l'exactitude des informations.", form.elements.certifie);
+    var lettre = form.elements.lettre.files[0] || null;
+    if (!cv) return fail("Ajoutez votre CV.", form.elements.cv);
+    if (!lettre) return fail("Ajoutez votre lettre de motivation.", form.elements.lettre);
     if (!form.elements.consentement.checked) return fail("Cochez la case d'accord pour que nous puissions étudier votre candidature.", form.elements.consentement);
     if (!API || !KEY || !window.fetch) return fail("L'envoi en ligne est momentanément indisponible. Écrivez-nous à depano.dj@gmail.com.");
 
@@ -110,27 +103,23 @@
     prog.hidden = false;
     prog.textContent = "Envoi en cours… merci de ne pas fermer la page.";
 
-    var tasks = Promise.resolve(null);
-    var cvPath = null, photoPaths = [];
-    if (cv) tasks = shrink(cv).then(function (f) { prog.textContent = "Envoi du CV…"; return upload(ref + "/cv." + ext(f), f); }).then(function (p) { cvPath = p; });
-    photos.forEach(function (ph, k) {
-      tasks = tasks.then(function () { return shrink(ph); }).then(function (f) {
-        if (f.size > MAX) return null;
-        prog.textContent = "Envoi des photos (" + (k + 1) + "/" + photos.length + ")…";
-        return upload(ref + "/photo-" + (k + 1) + "." + ext(f), f).then(function (p) { photoPaths.push(p); });
-      });
-    });
+    var cvPath = null, lettrePath = null;
+    var tasks = shrink(cv).then(function (f) {
+      if (f.size > MAX) throw new Error("big");
+      prog.textContent = "Envoi du CV…";
+      return upload(ref + "/cv." + ext(f), f);
+    }).then(function (p) { cvPath = p; return shrink(lettre); }).then(function (f) {
+      if (f.size > MAX) throw new Error("big");
+      prog.textContent = "Envoi de la lettre de motivation…";
+      return upload(ref + "/lettre." + ext(f), f);
+    }).then(function (p) { lettrePath = p; });
 
     tasks.then(function () {
       prog.textContent = "Enregistrement de votre candidature…";
       var row = {
         reference: ref, poste: form.getAttribute("data-poste"),
         prenom: val("prenom"), nom: val("nom"), telephone: val("telephone"), email: val("email") || null,
-        quartier: val("quartier"), annees_experience: val("annees_experience"), situation: val("situation"),
-        dernier_employeur: val("dernier_employeur") || null, specialites: checks("specialites"),
-        formation: val("formation") || null, habilitation: val("habilitation") || null,
-        disponibilite: radio("disponibilite") || null, outillage: radio("outillage") || null, transport: radio("transport") || null,
-        langues: checks("langues"), motivation: val("motivation"), cv_path: cvPath, photos_paths: photoPaths, consentement: true
+        cv_path: cvPath, lettre_path: lettrePath, consentement: true
       };
       return fetch(API + "/rest/v1/candidatures", {
         method: "POST",
@@ -144,9 +133,10 @@
       done.hidden = false;
       done.focus();
       done.scrollIntoView({ block: "start", behavior: "smooth" });
-    }).catch(function () {
+    }).catch(function (x) {
       btn.disabled = false;
       prog.hidden = true;
+      if (x && x.message === "big") return fail("Un fichier dépasse 5 Mo. Choisissez un fichier plus léger (ou une photo).");
       fail("L'envoi n'a pas abouti (connexion interrompue ?). Vérifiez votre connexion et réessayez. Si le problème continue, écrivez-nous à depano.dj@gmail.com.");
     });
   });
