@@ -1370,3 +1370,13 @@ body::before{background:#fff}
 @keyframes pick{50%{transform:scale(.96)}}
 @media (max-width:560px){.rv-steps{grid-template-columns:1fr}}
 @media (max-width:760px){.hx-svc:has(input:checked)::after{top:5px;right:5px;width:15px;height:15px;background-size:10px}.hx-svc{padding-right:16px}.hx-svc-name{font-size:14px}}
+
+/* v8 — offres d'emploi */
+.job-facts{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:900px}
+.job-facts li{padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 20px -16px rgba(10,40,40,.4);font-size:15px;line-height:1.35}
+.job-facts b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:3px;font-weight:600}
+.job-badge-hot{background:#FDECEA;color:#B42318}
+.job-note a{font-weight:700;color:var(--tone)}
+.hire-banner{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 22px;padding:16px 18px;border-radius:18px;background:#fff;border:1.5px solid #F4C7C3}
+.hire-banner p{margin:0;flex:1 1 320px}
+@media (max-width:760px){.job-facts{grid-template-columns:1fr 1fr}.hire-banner .btn{flex:1 1 auto;justify-content:center}}

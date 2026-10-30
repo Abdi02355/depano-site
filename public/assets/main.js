@@ -691,3 +691,13 @@
     });
   });
 })();
+
+/* v8 — artisans.html?poste=Électricité#candidature : préremplit le poste et l'expérience */
+(function () {
+  var sel = document.getElementById("a-metier");
+  var poste = new URLSearchParams(location.search).get("poste");
+  if (!sel || !poste) return;
+  for (var i = 0; i < sel.options.length; i++) if (sel.options[i].text === poste) sel.selectedIndex = i;
+  var exp = document.getElementById("a-exp");
+  if (exp) for (var k = 0; k < exp.options.length; k++) if (exp.options[k].text === "5 à 10 ans") exp.selectedIndex = k;
+})();
