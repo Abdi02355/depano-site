@@ -718,6 +718,7 @@
   var R = (window.DEPANO_CONFIG || {}).recrutement || {};
   if (!R.url || !R.cle || !window.fetch) return;
   if (navigator.webdriver || !/depanodj\.com$/.test(location.hostname)) return;
+  if (/bot|crawl|spider|slurp|google-inspectiontool|lighthouse|headless|preview|facebookexternalhit|whatsapp/i.test(navigator.userAgent || "")) return;
   var id = "";
   try { id = localStorage.getItem("dp_v") || ""; if (!id) { id = Math.random().toString(36).slice(2, 12); localStorage.setItem("dp_v", id); } } catch (e) {}
   var w = window.innerWidth || 1000;
