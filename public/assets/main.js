@@ -711,3 +711,39 @@
     if (end && now > end && el.parentNode) el.parentNode.removeChild(el);
   });
 })();
+
+/* v13 — compteur de visites (sans cookie ni donnée personnelle) */
+(function () {
+  "use strict";
+  var R = (window.DEPANO_CONFIG || {}).recrutement || {};
+  if (!R.url || !R.cle || !window.fetch) return;
+  if (navigator.webdriver || !/depanodj\.com$/.test(location.hostname)) return;
+  var id = "";
+  try { id = localStorage.getItem("dp_v") || ""; if (!id) { id = Math.random().toString(36).slice(2, 12); localStorage.setItem("dp_v", id); } } catch (e) {}
+  var w = window.innerWidth || 1000;
+  var appareil = w < 700 ? "mobile" : w < 1100 ? "tablette" : "ordinateur";
+  var src = "";
+  try { var r = document.referrer ? new URL(document.referrer).hostname : ""; if (r && r !== location.hostname) src = r.slice(0, 120); } catch (e) {}
+  function send(ev) {
+    try {
+      fetch(String(R.url).replace(/\/$/, "") + "/rest/v1/visites", {
+        method: "POST", keepalive: true,
+        headers: { "apikey": R.cle, "Authorization": "Bearer " + R.cle, "Content-Type": "application/json", "Prefer": "return=minimal" },
+        body: JSON.stringify({ page: (location.pathname || "/").slice(0, 200), source: src || null, appareil: appareil, visiteur: id || null, evenement: ev })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  send("vue");
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a) return;
+    var h = a.getAttribute("href") || "";
+    if (/wa\.me/.test(a.href)) send("whatsapp");
+    else if (/^tel:/.test(h)) send("appel");
+  }, true);
+  document.addEventListener("submit", function (e) {
+    var f = e.target;
+    if (f.matches && f.matches("form[data-wa-book]")) send("reservation");
+    else if (f.id === "candidature-form") send("candidature");
+  }, true);
+})();
