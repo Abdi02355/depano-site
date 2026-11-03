@@ -497,8 +497,8 @@
     }, { passive: true });
   }
 
-  /* Bouton WhatsApp flottant */
-  if (R.waUrl) {
+  /* Bouton WhatsApp flottant (absent des pages recrutement : candidature par formulaire uniquement) */
+  if (R.waUrl && !document.body.hasAttribute("data-recrutement")) {
     var fab = document.createElement("a");
     fab.className = "fab-wa";
     fab.href = R.waUrl("Bonjour Dépano, j'ai besoin d'un artisan.");
