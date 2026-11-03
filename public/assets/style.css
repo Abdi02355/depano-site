@@ -1496,3 +1496,21 @@ a.zone-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shad
 @media (max-width:900px){.svc-local{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.svc-local,.urg-grid{grid-template-columns:1fr}}
 .urg-card ol{list-style:decimal}.urg-card ol li::marker{color:var(--accent);font-weight:700}
+
+/* ---------- Avis clients (v18) ---------- */
+.reviews-summary{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 26px}
+.reviews-summary b{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:1;letter-spacing:-.03em}
+.reviews-summary .stars{color:#E2A100;letter-spacing:3px;font-size:22px}
+.reviews-summary span:last-child{color:var(--muted);font-size:15px}
+.reviews-page{margin-top:0}
+.reviews-empty{color:var(--muted);font-size:17px;padding:28px;border:1.5px dashed var(--line);border-radius:20px;text-align:center}
+.review-date{display:block;margin-top:4px;font-size:13px;color:var(--muted)}
+.reviews-more{margin-top:22px}.reviews-more a{font-weight:600;color:var(--accent)}
+.avis-wrap{max-width:760px}
+.star-input{display:inline-flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+.star-input input{position:absolute;opacity:0;width:1px;height:1px}
+.star-input label{font-size:44px;line-height:1;color:#D5DCDE;cursor:pointer;transition:color .12s,transform .12s;padding:0 2px}
+.star-input label:hover,.star-input label:hover ~ label,.star-input input:checked ~ label{color:#E2A100}
+.star-input label:active{transform:scale(.9)}
+.star-input input:focus-visible + label{outline:2px solid var(--accent);border-radius:6px}
+.avis-ok{align-items:flex-start}

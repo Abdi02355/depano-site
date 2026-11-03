@@ -95,31 +95,92 @@
     if (!n) box.hidden = true;
   });
 
-  /* Avis clients (uniquement ceux saisis dans config.js) */
-  var avis = C.avis || [];
-  $$("[data-reviews]").forEach(function (sec) {
-    if (!avis.length) return;
-    var list = $("[data-reviews-list]", sec);
-    avis.slice(0, 6).forEach(function (a) {
+  /* Avis clients : avis déposés sur le site (Supabase) + avis saisis dans config.js */
+  (function () {
+    var secs = $$("[data-reviews]");
+    var R = C.recrutement || {};
+    var base = (C.avis || []).map(function (a) { return { nom: a.nom, quartier: a.quartier, service: a.service, note: a.note, texte: a.texte }; });
+    function fmtDate(d) {
+      try { return new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }); } catch (e) { return ""; }
+    }
+    function card(a) {
       var note = Math.max(1, Math.min(5, Math.round(Number(a.note) || 5)));
       var art = document.createElement("article");
       art.className = "review";
       var stars = document.createElement("div");
       stars.className = "stars";
       stars.setAttribute("aria-label", note + " sur 5");
-      stars.textContent = new Array(note + 1).join("★");
+      stars.textContent = new Array(note + 1).join("★") + new Array(6 - note).join("☆");
       var p = document.createElement("p");
       p.textContent = a.texte || "";
       var f = document.createElement("footer");
       var b = document.createElement("b");
       b.textContent = a.nom || "";
       f.appendChild(b);
-      f.appendChild(document.createTextNode([a.quartier, a.service].filter(Boolean).length ? " · " + [a.quartier, a.service].filter(Boolean).join(" · ") : ""));
+      var extra = [a.quartier, a.service].filter(Boolean).join(" · ");
+      if (extra) f.appendChild(document.createTextNode(" · " + extra));
+      if (a.created_at) { var t = document.createElement("small"); t.className = "review-date"; t.textContent = fmtDate(a.created_at); f.appendChild(t); }
       art.appendChild(stars); art.appendChild(p); art.appendChild(f);
-      list.appendChild(art);
+      return art;
+    }
+    function render(list) {
+      secs.forEach(function (sec) {
+        var box = $("[data-reviews-list]", sec);
+        var max = Number(sec.getAttribute("data-reviews-max")) || 6;
+        if (box) box.innerHTML = "";
+        if (!list.length) { if (!sec.hasAttribute("data-reviews-always")) sec.hidden = true; return; }
+        list.slice(0, max).forEach(function (a) { box.appendChild(card(a)); });
+        var sum = $("[data-reviews-summary]", sec);
+        if (sum) {
+          var avg = list.reduce(function (s, a) { return s + (Number(a.note) || 0); }, 0) / list.length;
+          sum.innerHTML = "";
+          var big = document.createElement("b"); big.textContent = avg.toFixed(1).replace(".", ",");
+          var st = document.createElement("span"); st.className = "stars"; st.textContent = new Array(Math.round(avg) + 1).join("★") + new Array(6 - Math.round(avg)).join("☆");
+          var n = document.createElement("span"); n.textContent = list.length + (list.length > 1 ? " avis clients" : " avis client");
+          sum.appendChild(big); sum.appendChild(st); sum.appendChild(n); sum.hidden = false;
+        }
+        var empty = $("[data-reviews-empty]", sec); if (empty) empty.hidden = true;
+        sec.hidden = false;
+      });
+    }
+    function load() {
+      if (!R.url || !R.cle || !window.fetch) { render(base); return; }
+      fetch(String(R.url).replace(/\/$/, "") + "/rest/v1/avis?select=nom,quartier,service,note,texte,created_at&order=created_at.desc&limit=100", {
+        headers: { "apikey": R.cle, "Authorization": "Bearer " + R.cle }
+      }).then(function (r) { return r.ok ? r.json() : []; })
+        .then(function (rows) { render((Array.isArray(rows) ? rows : []).concat(base)); })
+        .catch(function () { render(base); });
+    }
+    if (secs.length) load();
+
+    /* Formulaire « Laisser un avis » (page avis.html) */
+    var form = document.getElementById("avis-form");
+    if (!form) return;
+    var err = $(".form-error", form), btn = $("button[type=submit]", form), ok = document.getElementById("avis-ok");
+    function fail(m) { err.textContent = m; err.hidden = false; btn.disabled = false; }
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      err.hidden = true;
+      var fd = new FormData(form);
+      if (fd.get("site_web")) return;
+      var nom = String(fd.get("nom") || "").trim(), texte = String(fd.get("texte") || "").trim(), note = Number(fd.get("note") || 0);
+      if (!note) return fail("Choisissez une note de 1 à 5 étoiles.");
+      if (nom.length < 2) return fail("Indiquez votre prénom.");
+      if (texte.length < 10) return fail("Écrivez quelques mots sur l'intervention (10 caractères minimum).");
+      if (!R.url || !R.cle) return fail("Le service d'avis est momentanément indisponible. Réessayez plus tard.");
+      btn.disabled = true;
+      fetch(String(R.url).replace(/\/$/, "") + "/rest/v1/avis", {
+        method: "POST",
+        headers: { "apikey": R.cle, "Authorization": "Bearer " + R.cle, "Content-Type": "application/json", "Prefer": "return=minimal" },
+        body: JSON.stringify({ nom: nom.slice(0, 60), quartier: String(fd.get("quartier") || "").trim().slice(0, 60) || null,
+          service: String(fd.get("service") || "").trim().slice(0, 60) || null, note: note, texte: texte.slice(0, 800) })
+      }).then(function (r) {
+        if (!r.ok) throw new Error();
+        form.hidden = true; if (ok) { ok.hidden = false; ok.focus(); }
+        load();
+      }).catch(function () { fail("L'envoi n'a pas abouti. Vérifiez votre connexion puis réessayez."); });
     });
-    sec.hidden = false;
-  });
+  })();
 
   /* ---------- En-tête ---------- */
   var header = $(".site-header");
