@@ -745,7 +745,6 @@
       if (svc) lines.push("J'ai besoin d'un service : " + svc + (presta ? " (" + presta + ")" : "") + ".");
       else lines.push("J'ai besoin d'un dépannage à domicile.");
       if (quartier) lines.push("Quartier : " + quartier + ".");
-      if (Date.now() < Date.parse("2026-11-20T23:59:59+03:00")) lines.push("(Offre de lancement : −50 % sur ma première intervention)");
       lines.push("Voici mon problème : ");
       var url = H.waUrl(lines.join("\n"));
       try { if (window.gtag) window.gtag("event", "reservation_whatsapp", { service: svc || "non précisé" }); } catch (e) {}
@@ -764,14 +763,6 @@
   if (exp) for (var k = 0; k < exp.options.length; k++) if (exp.options[k].text === "5 à 10 ans") exp.selectedIndex = k;
 })();
 
-/* v12 — l'offre de lancement disparaît d'elle-même après sa date de fin */
-(function () {
-  var now = Date.now();
-  Array.prototype.forEach.call(document.querySelectorAll("[data-promo-end]"), function (el) {
-    var end = Date.parse(el.getAttribute("data-promo-end"));
-    if (end && now > end && el.parentNode) el.parentNode.removeChild(el);
-  });
-})();
 
 /* v13 — compteur de visites (sans cookie ni donnée personnelle) */
 (function () {
